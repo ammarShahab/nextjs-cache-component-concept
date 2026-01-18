@@ -27,7 +27,7 @@
 #### Example
 
 ```
-export default function Dashboart() {
+export default function Dashboard() {
 return (
 <>
  <Navbar/>
