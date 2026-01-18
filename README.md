@@ -40,3 +40,9 @@ return (
 }
 
 ```
+
+### Flow
+
+1. Created a database.json file in server folder and install "npm install json-server" save data and run "npx json-server db.json -p 8000"
+
+2.0
