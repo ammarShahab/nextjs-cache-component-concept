@@ -23,24 +23,24 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <a
+            <Link
               href="/multiple-dynamic-static"
               className="text-gray-700 hover:text-blue-600 transition"
             >
               Dynamic Static
-            </a>
-            <a
-              href="/services"
+            </Link>
+            <Link
+              href="/non-deterministic-operations"
               className="text-gray-700 hover:text-blue-600 transition"
             >
-              Services
-            </a>
-            <a
-              href="/contact"
+              Non-Deterministic Operations
+            </Link>
+            <Link
+              href="/non-deterministic-operations"
               className="text-gray-700 hover:text-blue-600 transition"
             >
               Contact
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -91,12 +91,12 @@ export default function Navbar() {
             >
               Services
             </Link>
-            <a
+            <Link
               href="/contact"
               className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
             >
               Contact
-            </a>
+            </Link>
           </div>
         </div>
       )}
