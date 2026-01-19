@@ -1,8 +1,9 @@
 import Image from "next/image";
 import staticImage from "../../public/next.svg";
 import { Suspense } from "react";
+import { connection } from "next/server";
 
-// 4.0 To  add dynamic content in a static content use with suspense boundary. So first created a static component MultipleDynamicStatic.
+// 5.0 Next js cannot determines the non deterministic operations like Math.random(), Date.now(), etc. is static or dynamic. You keep a random number static or dynamic which is upto u. So u have to mark it.
 export default async function NonDeterministicOperations() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -13,70 +14,55 @@ export default async function NonDeterministicOperations() {
           </h1>
           <p className="text-center mb-5">Non-Deterministic Operations</p>
 
-          {/* 4.3 Implement the dynamic content with suspense boundary */}
+          {/* Static content */}
+          {/* 5.2 call the StaticComponent without suspense boundary because we use use cache to mark it static */}
+          <StaticComponent />
+
+          {/* 5.4 Implement the RandomNumber without suspense boundary which is static because of use cache */}
+          <RandomNumber />
+
+          {/* 5.6 Implement with suspense boundary */}
           <Suspense fallback={<div>Loading...</div>}>
-            <DynamicContent />
+            <RandomNumber2 />
           </Suspense>
-          {/* 4.1 Static content */}
-          {/* Static */}
-          <div>
-            <h4 className="mb-5">Static Content</h4>
-            <div>
-              <Image
-                src={staticImage}
-                alt="Static product image"
-                width={200}
-                height={200}
-              />
-            </div>
-            <h4 className="mt-5">Static Product</h4>
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// 4.2 Dynamic content
-async function DynamicContent() {
-  const response = await fetch("http://localhost:8000/products");
-  const products = await response.json();
-  // console.log(products);
+// 5.1 Create a dynamic component and make it static using use cache
+async function StaticComponent() {
+  "use cache";
+  const response = await fetch("https://random-word-api.herokuapp.com/word");
+  const word = await response.json();
   return (
-    <div className="grid grid-cols-4 gap-4">
-      {products.map((product) => (
-        <div key={product.id}>
-          <h4>Dynamic Content</h4>
-          <div>
-            <Image
-              src={product.image}
-              alt="product image"
-              width={200}
-              height={200}
-            />
-          </div>
-          <h4 className="mt-5">{product.name}</h4>
-        </div>
-      ))}
-      {/* Static */}
-      {/* <div>
-        <h4 className="mb-5">Static Content</h4>
-        <div>
-          <Image
-            src={staticImage}
-            alt="Static product image"
-            width={200}
-            height={200}
-          />
-        </div>
-        <h4 className="mt-5">Static Product</h4>
-      </div> */}
+    <div>
+      <h4 className="mb-5">Static Content: {word}</h4>
     </div>
   );
 }
 
-// 4.4 If u run npm run build then u will see in the terminal "/multiple-dynamic-static" with half moon sign which is partially prerender and home page static that is we are getting both static and Dynamic Content in one page. Now if u change any data from the db u get the updated data because the page is dynamically rendered.
+// 5.3 created a non deterministic component RandomNumber and mark it as static using use cache. If u not use use cache then it will show error
+async function RandomNumber() {
+  "use cache";
+  const random = Math.floor(Math.random() * 1000);
 
-// 4.5 Now if u use the static content by uncomment the static part from the DynamicContent and comment the Dynamic Content and fetch data then run npm run build u will get the full page as static. Remember one thing if anything wrapped with suspense is not be dynamic it may be static. True dynamic run time data i.e cookies, headers are also wrapped with suspense.
+  return (
+    <div className="w-full bg-amber-400 p-2 mt-4">
+      Random Numbers (static): {random}
+    </div>
+  );
+}
 
-// Note: Runtime data i.e cookies, headers etc cannot be static and use with Suspense boundary
+// 5.5 To make the random number dynamic we use connection api from nextjs
+async function RandomNumber2() {
+  await connection();
+  const random = Math.floor(Math.random() * 1000);
+
+  return (
+    <div className="w-full bg-red-400 p-2 mt-4">
+      Random Numbers (dynamic): {random}
+    </div>
+  );
+}
