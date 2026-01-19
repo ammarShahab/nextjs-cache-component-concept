@@ -3,8 +3,8 @@ import staticImage from "../../public/next.svg";
 import { Suspense } from "react";
 import { connection } from "next/server";
 
-// 5.0 Next js cannot determines the non deterministic operations like Math.random(), Date.now(), etc. is static or dynamic. You keep a random number static or dynamic which is upto u. So u have to mark it.
-export default async function NonDeterministicOperations() {
+// 5.0 Next js cannot determines the non deterministic operations like Math.random(), Date.now(), etc. is static or dynamic. To keep non deterministic operations static or dynamic which is upto u. So u have to mark it.
+export default function NonDeterministicOperations() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <div className="flex w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -19,11 +19,11 @@ export default async function NonDeterministicOperations() {
           <StaticComponent />
 
           {/* 5.4 Implement the RandomNumber without suspense boundary which is static because of use cache */}
-          <RandomNumber />
+          <RandomNumberStatic />
 
-          {/* 5.6 Implement with suspense boundary */}
+          {/* 5.6 Implement with suspense boundary nor it will show error*/}
           <Suspense fallback={<div>Loading...</div>}>
-            <RandomNumber2 />
+            <RandomNumberDynamic />
           </Suspense>
         </div>
       </div>
@@ -43,8 +43,8 @@ async function StaticComponent() {
   );
 }
 
-// 5.3 created a non deterministic component RandomNumber and mark it as static using use cache. If u not use use cache then it will show error
-async function RandomNumber() {
+// 5.3 created a non deterministic component RandomNumber and mark it as static using use cache. If u not use "use cache" then it will show error
+async function RandomNumberStatic() {
   "use cache";
   const random = Math.floor(Math.random() * 1000);
 
@@ -56,7 +56,7 @@ async function RandomNumber() {
 }
 
 // 5.5 To make the random number dynamic we use connection api from nextjs
-async function RandomNumber2() {
+async function RandomNumberDynamic() {
   await connection();
   const random = Math.floor(Math.random() * 1000);
 

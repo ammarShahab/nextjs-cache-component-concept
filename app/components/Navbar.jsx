@@ -36,10 +36,10 @@ export default function Navbar() {
               Non-Deterministic Operations
             </Link>
             <Link
-              href="/non-deterministic-operations"
+              href="/runtime-data"
               className="text-gray-700 hover:text-blue-600 transition"
             >
-              Contact
+              Runtime Data
             </Link>
           </div>
 
