@@ -62,3 +62,5 @@ export default async function Home() {
     </div>
   );
 }
+
+// 3.3.2 Now if u change any data from the db u don't get the updated data because the page is statically rendered.
