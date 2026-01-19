@@ -7,8 +7,10 @@ import staticImage from "../public/next.svg";
 // 3.2.1 We can also use in page level
 // "use cache";
 export default async function Home() {
-  // 3.2.0 so to make it static we will "use cache" to marks it static then the error will be resolved
+  // 3.2.0 so to make it static we will make it in suspense boundary i.e use "use cache" to mark it static then the error will be resolved because in cache Components by default are dynamic
   "use cache";
+  // 3.3.1 comment this line to make it static
+  // "use cache";
 
   // 3.1 previously this type of fetch consider as static i.e it was cached but after enabling cacheComponents it consider as dynamic i.e uncached that's why it is showing error.
   const response = await fetch("http://localhost:8000/products");
@@ -39,6 +41,8 @@ export default async function Home() {
               </div>
             ))}
             {/* 2.2 also created static content later which will be used later for another purpose*/}
+
+            {/* 3.3.0 If the page is pure static by uncomment the static section and comment the use cache, 2.1 dynamic content and 3.1 fetch data  then the page will be static without error. Because next js intelligently knows that the page is static and completely render it as static content.*/}
             {/* Static */}
             {/* <div>
               <h4 className="mb-5">Static Content</h4>

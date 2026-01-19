@@ -46,3 +46,8 @@ return (
 1. Created a database.json file in server folder and install "npm install json-server" save data and run "npx json-server db.json -p 8000"
 
 2.0
+
+### Final Note
+
+- Enabling cache component, to make a dynamic page static, you have to mark it as static using use-cache at page level or component level.
+- but in case of pure static page next js intelligently marks it as static.
