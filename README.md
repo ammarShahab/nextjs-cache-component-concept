@@ -52,3 +52,4 @@ return (
 - Enabling cache component, to make a dynamic page static, you have to mark it as static using use-cache at page level or component level.
 - but in case of pure static page next js intelligently marks it as static.
 - to implement a dynamic content in a static page we have to use suspense boundary.
+- Dynamic content or static content is wrapped with Suspense boundary.

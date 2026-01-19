@@ -9,7 +9,7 @@ import staticImage from "../public/next.svg";
 export default async function Home() {
   // 3.2.0 so to make it static we will make it in suspense boundary i.e use "use cache" to mark it static then the error will be resolved because in cache Components by default are dynamic
   "use cache";
-  // 3.3.1 comment this line to make it static
+  // 3.3.1 comment this line to make it pure static
   // "use cache";
 
   // 3.1 previously this type of fetch consider as static i.e it was cached but after enabling cacheComponents it consider as dynamic i.e uncached that's why it is showing error.
