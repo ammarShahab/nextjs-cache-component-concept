@@ -39,16 +39,19 @@ async function ThemeInfoDynamic() {
     </div>
   );
 }
+
 // 6.3 To make the run time data static we need to send as props. So created a component ThemeInfoStatic and get the cookie value and send it as props to GetStaticCookies component
 async function ThemeInfoStatic() {
   const cookieStore = await cookies();
-  let theme = cookieStore.get("theme")?.value ?? "light";
+  console.log(cookieStore);
+
+  let theme = cookieStore.get("theme")?.value ?? "dark";
 
   if (!theme) {
-    theme = "dark";
+    theme = "light";
     cookieStore.set("theme", theme);
   }
-  console.log(theme);
+  console.log("Theme", theme);
   return <GetStaticCookies theme={theme} />;
 }
 

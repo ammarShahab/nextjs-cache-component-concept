@@ -2,6 +2,7 @@ import Image from "next/image";
 import staticImage from "../../public/next.svg";
 import { Suspense } from "react";
 import { connection } from "next/server";
+import { cacheLife } from "next/cache";
 
 // 5.0 Next js cannot determines the non deterministic operations like Math.random(), Date.now(), etc. is static or dynamic. To keep non deterministic operations static or dynamic which is upto u. So u have to mark it.
 export default function NonDeterministicOperations() {
@@ -16,7 +17,7 @@ export default function NonDeterministicOperations() {
 
           {/* Static content */}
           {/* 5.2 call the StaticComponent without suspense boundary because we use use cache to mark it static */}
-          <StaticComponent />
+          <StaticWordComponent />
 
           {/* 5.4 Implement the RandomNumber without suspense boundary which is static because of use cache */}
           <RandomNumberStatic />
@@ -25,6 +26,9 @@ export default function NonDeterministicOperations() {
           <Suspense fallback={<div>Loading...</div>}>
             <RandomNumberDynamic />
           </Suspense>
+
+          {/* 7.3 Implement the  StaticWordRevalidateComponent without suspense boundary*/}
+          <StaticWordRevalidateComponent />
         </div>
       </div>
     </div>
@@ -32,8 +36,9 @@ export default function NonDeterministicOperations() {
 }
 
 // 5.1 Create a dynamic component and make it static using use cache
-async function StaticComponent() {
+async function StaticWordComponent() {
   "use cache";
+
   const response = await fetch("https://random-word-api.herokuapp.com/word");
   const word = await response.json();
   return (
@@ -63,6 +68,22 @@ async function RandomNumberDynamic() {
   return (
     <div className="w-full bg-red-400 p-2 mt-4">
       Random Numbers (dynamic): {random}
+    </div>
+  );
+}
+
+// 7.0 As we use "use cache" to mark any dynamic component static but we want to revalidate the data of this type of component using revalidate function. Here we work with StaticWordRevalidateComponent. There are various way to revalidate the static component such as cacheLife("minutes"), cacheLife("seconds"), cacheLife("hours").
+async function StaticWordRevalidateComponent() {
+  "use cache";
+  // 7.2 use cacheLife to revalidate the static component
+  cacheLife("minutes");
+  const response = await fetch("https://random-word-api.herokuapp.com/word");
+  const word = await response.json();
+  return (
+    <div>
+      <h4 className="-full bg-purple-400 p-2 mt-4">
+        Static Content With Revalidation: {word}
+      </h4>
     </div>
   );
 }
