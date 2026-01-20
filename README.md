@@ -130,8 +130,6 @@ return (
 
 7.2.2 use cacheTag and use the same tag name as used in invalidate api's revalidateTag. Now follow the same process call the api in another tab "http://localhost:3000/non-deterministic-operations/api/invalidate" now reload the page "http://localhost:3000/non-deterministic-operations" and u will get the updated data.
 
-7.1.4 implement the StaticWordRevalidatePathComponent
-
 ### Final Note (In a eagle view)
 
 - Enabling cache component, to make a dynamic page static, you have to mark it as static using use-cache at page level or component level.
