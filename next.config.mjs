@@ -12,7 +12,7 @@ const nextConfig = {
       },
     ],
   },
-  // 3.0 to enable cache components write the following line and after doing that it will show error. The previous mental model was try to make everything static as possible.
+  // 3.0 to enable cache components write the following line and after doing that it will show error. The previous mental model was try to make everything static as possible but now the mental model is dynamic by default.
   cacheComponents: true,
 };
 

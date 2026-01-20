@@ -25,8 +25,8 @@ export default function NonDeterministicOperations() {
             <RandomNumberDynamic />
           </Suspense>
 
-          {/* 7.0.2 Implement the  StaticWordRevalidateComponent without suspense boundary*/}
-          <StaticWordRevalidateComponent />
+          {/* 7.0.2 Implement the  StaticWordTimeBaseRevalidation without suspense boundary*/}
+          <StaticWordTimeBaseRevalidation />
 
           {/* 7.1.3 implement the StaticWordRevalidatePathComponent*/}
           <StaticWordRevalidatePathComponent />
@@ -74,10 +74,10 @@ async function RandomNumberDynamic() {
   );
 }
 
-// 7.0 As we use "use cache" to mark any dynamic component static but we want to revalidate the data of this type of component using cacheLife function. Here we work with StaticWordRevalidateComponent. There are various way to revalidate the static component. Timebase revalidation such as cacheLife("minutes"), cacheLife("seconds"), cacheLife("hours") etc and others are onDemandRevalidation such as revalidateTag, revalidatePath. Now if u reload after one minutes u will get the updated data in StaticWordRevalidateComponent but the StaticWordComponent is unchanged.
-async function StaticWordRevalidateComponent() {
+// 7.0 As we use "use cache" to mark any dynamic component static but we want to revalidate the data of this type of component using cacheLife function. Here we work with StaticWordTimeBaseRevalidation. There are various way to revalidate the static component. Timebase revalidation such as cacheLife("minutes"), cacheLife("seconds"), cacheLife("hours") etc and  on demand revalidation such as revalidateTag, revalidatePath. Now if u reload after one minutes u will get the updated data in StaticWordTimeBaseRevalidation but the StaticWordComponent is unchanged.
+async function StaticWordTimeBaseRevalidation() {
   "use cache";
-  // 7.0.1 use cacheLife to revalidate the static use cached component
+  // 7.0.1 use cacheLife time based revalidation to revalidate the static "use cache" component
   cacheLife("minutes");
   const response = await fetch("https://random-word-api.herokuapp.com/word");
   const word = await response.json();
@@ -102,7 +102,8 @@ async function StaticWordRevalidatePathComponent() {
         Static Content Revalidate with Path: {word}
       </h4>
       <p className="text-xs text-red-500">
-        to activate Path based revalidation uncomment the path based api and
+        to activate Path based revalidation uncomment the path based api in
+        app\non-deterministic-operations\api\invalidate\route.js folder and
         comment the tag based api
       </p>
     </div>
@@ -115,7 +116,7 @@ async function StaticWordRevalidatePathComponent() {
 // 7.2.0 Revalidate the data using revalidateTag so created a component StaticWordRevalidateTagComponent
 export async function StaticWordRevalidateTagComponent() {
   "use cache";
-  // 7.2.2 use cacheTag and use the same tag name as used in revalidateTag. Now follow the same process call the api in another tab "http://localhost:3000/non-deterministic-operations/api/invalidate" now reload the page "http://localhost:3000/non-deterministic-operations" and u will get the updated data.
+  // 7.2.2 use cacheTag and use the same tag name as used in invalidate api's revalidateTag. Now follow the same process call the api in another tab "http://localhost:3000/non-deterministic-operations/api/invalidate" now reload the page "http://localhost:3000/non-deterministic-operations" and u will get the updated data.
   cacheTag("non-deterministic-operations");
   const response = await fetch("https://random-word-api.herokuapp.com/word");
   const word = await response.json();
@@ -124,6 +125,12 @@ export async function StaticWordRevalidateTagComponent() {
       <h4 className="-full bg-yellow-300 p-2 mt-4">
         Static Content Revalidate with Tag: {word}
       </h4>
+      <p className="text-xs text-green-700">
+        to check the Tag based revalidation copy the api url
+        http://localhost:3000/non-deterministic-operations/api/invalidate and
+        paste it in another tab and call it by reload. Now reload the current
+        page and u will get the updated random name.
+      </p>
     </div>
   );
 }

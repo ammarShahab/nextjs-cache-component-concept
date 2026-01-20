@@ -1,6 +1,6 @@
-// 7.1.1 invalidate using onDemandRevalidation revalidatePath
 import { revalidatePath, revalidateTag } from "next/cache";
 
+// 7.1.1 invalidate using onDemand Revalidation revalidatePath
 /* export async function GET() {
   // 7.1.2 use revalidatePath
   revalidatePath("/non-deterministic-operations");

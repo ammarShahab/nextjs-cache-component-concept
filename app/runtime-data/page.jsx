@@ -25,7 +25,7 @@ export default function RuntimeData() {
   );
 }
 
-// 6.1 created a runtime component ThemeInfoDynamic and we will get the cookie value from it. as the cookies is runtime data so nextjs 100% sure that it's a dynamic component. You cannot make it static using use-cache.
+// 6.1 created a runtime dynamic component ThemeInfoDynamic and we will get the cookie value from it. as the cookies is runtime data so nextjs 100% sure that it's a dynamic component. You cannot make it static using use-cache.
 async function ThemeInfoDynamic() {
   const cookieStore = await cookies();
   const theme = cookieStore.get("theme")?.value ?? "light";
@@ -40,7 +40,7 @@ async function ThemeInfoDynamic() {
   );
 }
 
-// 6.3 To make the run time data static we need to send as props. So created a component ThemeInfoStatic and get the cookie value and send it as props to GetStaticCookies component
+// 6.3 To make the run time data static so created a component ThemeInfoStatic and get the cookie value and send it as props to GetStaticCookies component
 async function ThemeInfoStatic() {
   const cookieStore = await cookies();
   console.log(cookieStore);
@@ -55,7 +55,7 @@ async function ThemeInfoStatic() {
   return <GetStaticCookies theme={theme} />;
 }
 
-// 6.4 Make it static using use cache
+// 6.4  Make a GetStaticCookies and use "use cache" to make the component static
 async function GetStaticCookies({ theme }) {
   "use cache";
   console.log(theme);

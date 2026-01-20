@@ -51,5 +51,11 @@ return (
 
 - Enabling cache component, to make a dynamic page static, you have to mark it as static using use-cache at page level or component level.
 - but in case of pure static page next js intelligently marks it as static.
-- to implement a dynamic content in a static page we have to use suspense boundary.
-- Dynamic content or static content is wrapped with Suspense boundary.
+- to implement a dynamic content in a static page we have to use suspense boundary no use of use-cache.
+- Dynamic content or static content both are wrapped with Suspense boundary.
+- Nextjs cannot determine the non deterministic operations like Math.random(), Date.now(), etc. is static or dynamic. To keep non deterministic operations static we use only use-cache.
+- To keep non deterministic operations dynamic we use connection() api with suspense boundary.
+- To revalidate the static "use cache" component in non deterministic operations for time based revalidation e.g random word generator we use cacheLife() api without suspense boundary.
+- To revalidate the static "use cache" component in non deterministic operations for on demand revalidation e.g random word generator we use revalidatePath() or revalidateTag() api without suspense boundary.
+- Run time data e.g cookies, headers are true dynamic and cannot be made static using use-cache.
+- To make the run time data static we have to implement it with pass as props to "use cache" component.

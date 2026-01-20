@@ -63,4 +63,4 @@ export default async function Home() {
   );
 }
 
-// 3.3.2 Now if u change any data from the db u don't get the updated data because the page is statically rendered.
+// 3.3.2 Now if u change any data from the db u don't get the updated data because the page is statically rendered in Dynamic content.
