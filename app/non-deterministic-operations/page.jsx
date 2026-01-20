@@ -20,7 +20,7 @@ export default function NonDeterministicOperations() {
           {/* 5.4 Implement the RandomNumber without suspense boundary which is static because of use cache */}
           <RandomNumberStatic />
 
-          {/* 5.6 Implement with suspense boundary nor it will show error*/}
+          {/* 5.6 Implement with suspense boundary as it is true dynamic nor it will show error*/}
           <Suspense fallback={<div>Loading...</div>}>
             <RandomNumberDynamic />
           </Suspense>
