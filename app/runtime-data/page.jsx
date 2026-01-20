@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import React, { Suspense } from "react";
 
-// 6.0 For runtime data we use cookies() and headers() functions.
+// 6.0 For runtime data we use cookies() and headers() functions which are true dynamic now we will learn how to make it static or dynamic.
 export default function RuntimeData() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -16,9 +16,9 @@ export default function RuntimeData() {
         <Suspense fallback={<div>Loading...</div>}>
           <ThemeInfoDynamic />
         </Suspense>
-        {/* 6.5  implement with suspense boundary as it is static runtime data*/}
+        {/* 6.5  implement with suspense boundary as it is static runtime data it also shows error*/}
         <Suspense fallback={<div>Loading...</div>}>
-          <GetStaticCookies />
+          <ThemeInfoStatic />
         </Suspense>
       </div>
     </div>
@@ -39,8 +39,8 @@ async function ThemeInfoDynamic() {
     </div>
   );
 }
-// 6.4 get the cookie value and send it as props to ThemeInfoStatic component
-async function GetStaticCookies() {
+// 6.3 To make the run time data static we need to send as props. So created a component ThemeInfoStatic and get the cookie value and send it as props to GetStaticCookies component
+async function ThemeInfoStatic() {
   const cookieStore = await cookies();
   let theme = cookieStore.get("theme")?.value ?? "light";
 
@@ -49,13 +49,15 @@ async function GetStaticCookies() {
     cookieStore.set("theme", theme);
   }
   console.log(theme);
-  return <ThemeInfoStatic theme={theme} />;
+  return <GetStaticCookies theme={theme} />;
 }
 
-// 6.3 To make the run time data static we need to send as props
-async function ThemeInfoStatic({ theme }) {
+// 6.4 Make it static using use cache
+async function GetStaticCookies({ theme }) {
   "use cache";
   console.log(theme);
+  // practically there will be a fetch call here
+  // const data = await fetchUserTheme(theme)
 
   return (
     <div>
