@@ -1,8 +1,6 @@
-import Image from "next/image";
-import staticImage from "../../public/next.svg";
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 // 5.0 Next js cannot determines the non deterministic operations like Math.random(), Date.now(), etc. is static or dynamic. To keep non deterministic operations static or dynamic which is upto u. So u have to mark it.
 export default function NonDeterministicOperations() {
@@ -27,8 +25,12 @@ export default function NonDeterministicOperations() {
             <RandomNumberDynamic />
           </Suspense>
 
-          {/* 7.3 Implement the  StaticWordRevalidateComponent without suspense boundary*/}
+          {/* 7.0.2 Implement the  StaticWordRevalidateComponent without suspense boundary*/}
           <StaticWordRevalidateComponent />
+
+          {/* 7.1.3 implement the StaticWordRevalidatePathComponent*/}
+          <StaticWordRevalidatePathComponent />
+          <StaticWordRevalidateTagComponent />
         </div>
       </div>
     </div>
@@ -72,17 +74,55 @@ async function RandomNumberDynamic() {
   );
 }
 
-// 7.0 As we use "use cache" to mark any dynamic component static but we want to revalidate the data of this type of component using revalidate function. Here we work with StaticWordRevalidateComponent. There are various way to revalidate the static component such as cacheLife("minutes"), cacheLife("seconds"), cacheLife("hours").
+// 7.0 As we use "use cache" to mark any dynamic component static but we want to revalidate the data of this type of component using cacheLife function. Here we work with StaticWordRevalidateComponent. There are various way to revalidate the static component. Timebase revalidation such as cacheLife("minutes"), cacheLife("seconds"), cacheLife("hours") etc and others are onDemandRevalidation such as revalidateTag, revalidatePath. Now if u reload after one minutes u will get the updated data in StaticWordRevalidateComponent but the StaticWordComponent is unchanged.
 async function StaticWordRevalidateComponent() {
   "use cache";
-  // 7.2 use cacheLife to revalidate the static component
+  // 7.0.1 use cacheLife to revalidate the static use cached component
   cacheLife("minutes");
   const response = await fetch("https://random-word-api.herokuapp.com/word");
   const word = await response.json();
   return (
     <div>
       <h4 className="-full bg-purple-400 p-2 mt-4">
-        Static Content With Revalidation: {word}
+        Static Content With Revalidation (cacheLife): {word}
+      </h4>
+    </div>
+  );
+}
+
+// 7.1.0 use revalidatePath to revalidate the static use cached component so created a StaticWordRevalidatePathComponent
+async function StaticWordRevalidatePathComponent() {
+  "use cache";
+
+  const response = await fetch("https://random-word-api.herokuapp.com/word");
+  const word = await response.json();
+  return (
+    <div>
+      <h4 className="-full bg-purple-400 p-2 mt-4">
+        Static Content Revalidate with Path: {word}
+      </h4>
+      <p className="text-xs text-red-500">
+        to activate Path based revalidation uncomment the path based api and
+        comment the tag based api
+      </p>
+    </div>
+  );
+}
+
+// 7.1.3 now call the api in another tab "http://localhost:3000/non-deterministic-operations/api/invalidate" now reload the page "http://localhost:3000/non-deterministic-operations" and u will get the updated data and it's cached. Every time u should follow the same process to revalidate the data by revalidatePath. Best practice is to use button to call the api.
+// Note: In path based revalidation entire page is revalidated. To more granular control use revalidateTag.
+
+// 7.2.0 Revalidate the data using revalidateTag so created a component StaticWordRevalidateTagComponent
+export async function StaticWordRevalidateTagComponent() {
+  "use cache";
+  // 7.2.2 use cacheTag and use the same tag name as used in revalidateTag. Now follow the same process call the api in another tab "http://localhost:3000/non-deterministic-operations/api/invalidate" now reload the page "http://localhost:3000/non-deterministic-operations" and u will get the updated data.
+  cacheTag("non-deterministic-operations");
+  const response = await fetch("https://random-word-api.herokuapp.com/word");
+  const word = await response.json();
+  return (
+    <div>
+      <h4 className="-full bg-yellow-300 p-2 mt-4">
+        Static Content Revalidate with Tag: {word}
       </h4>
     </div>
   );
