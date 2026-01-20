@@ -28,7 +28,7 @@ export default function NonDeterministicOperations() {
           {/* 7.0.2 Implement the  StaticWordTimeBaseRevalidation without suspense boundary*/}
           <StaticWordTimeBaseRevalidation />
 
-          {/* 7.1.3 implement the StaticWordRevalidatePathComponent*/}
+          {/* 7.1.4 implement the StaticWordRevalidatePathComponent*/}
           <StaticWordRevalidatePathComponent />
           <StaticWordRevalidateTagComponent />
         </div>
