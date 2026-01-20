@@ -132,7 +132,7 @@ return (
 
 7.1.4 implement the StaticWordRevalidatePathComponent
 
-### Final Note
+### Final Note (In a eagle view)
 
 - Enabling cache component, to make a dynamic page static, you have to mark it as static using use-cache at page level or component level.
 - but in case of pure static page next js intelligently marks it as static.
