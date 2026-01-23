@@ -50,7 +50,8 @@ async function StaticWordComponent() {
   );
 }
 
-// 5.3 created a non deterministic component RandomNumber and mark it as static using use cache. If u not use "use cache" then it will show error
+// 5.3 created a non deterministic component Random Number and mark it as static using use cache. If u not use "use cache" then it will show error.
+
 async function RandomNumberStatic() {
   "use cache";
   const random = Math.floor(Math.random() * 1000);
